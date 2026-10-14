@@ -1,0 +1,65 @@
+from pymongo import MongoClient
+import pprint
+from datetime import datetime
+
+
+client = MongoClient("mongodb://localhost:27017/")
+db = client["webshop"]
+
+print("---------------Exercise 1-------------------")
+products = db.products.find()
+for product in products:
+    pprint.pp(product)
+
+print("---------------Exercise 2-------------------")
+customers2 = db.customers.find({"city": "Göteborg"},{"first_name":1, "last_name":1} )
+for customer in customers2:
+    pprint.pp(customer)
+
+print("---------------Exercise 3-------------------")
+products3 = db.products.find({}, {"name": 1, "price": 1})
+for product in products3:
+    pprint.pp(product)
+
+print("---------------Exercise 4-------------------")
+customers4 = db.customers.count_documents({"city" : "Uppsala"})
+print(customers4)
+
+print("---------------Exercise 5-------------------")
+stock5 = db.products.find_one({"name" : "Sandals"},{"stock":1})
+print(stock5)
+
+print("---------------Exercise 6-------------------")
+customers6 = db.customers.find({"newsletter" : True}, {"first_name" : 1})
+for customer in customers6:
+    pprint.pp(customer)
+
+print("---------------Exercise 7-------------------")
+customer7 = {"first_name": "Ana", "last_name": "Ball", "email": "ana.ball@example.com", "city": "Uppsala", "joined": datetime(2026, 10, 14), "newsletter": True}
+#Commented out to avoid inserting several MEs
+#result7 = db.customers.insert_one(customer7)
+#print(result7.inserted_id)
+me = db.customers.find_one({"email" : "ana.ball@example.com"})
+pprint.pp(me)
+
+print("---------------Exercise 8-------------------")
+products8 = [
+    {"_id": 13, "name": "Hoodie Pink", "category": "Clothing", "price": 599, "stock": 25, "tags": ["winter", "cotton", "bestseller"], "details": {"color": "black", "material": "cotton"}},
+    {"_id": 14, "name": "T-shirt Black", "category": "Clothing", "price": 249, "stock": 60, "tags": ["summer", "cotton"], "details": {"color": "white", "material": "cotton"}},
+]
+#db.products.insert_many(products8)
+prods8 = db.products.count_documents({})
+print(prods8)
+
+print("---------------Exercise 9-------------------")
+customers9 = db.customers.find({})
+for customer in customers9:
+    first_name = customer.get("first_name")
+    last_name = customer.get("last_name")
+    city = customer.get("city", "Unknown")
+    print(f"{first_name} {last_name} ({city})")
+
+print("---------------Exercise 10-------------------")
+orders = db.orders.find()
+for order in orders:
+    print(f"Order {order.get("_id")}: {len(order.get("items"))}")
