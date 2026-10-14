@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 import pprint
+from datetime import datetime
 
 client = MongoClient("mongodb://localhost:27017/")
 db = client["webshop"]
@@ -18,3 +19,50 @@ print("---------------Exercise 3-------------------")
 customers3 = db.customers.find({"city" : {"$in": ("Stockholm", "Malmö")}}, {"first_name" : 1, "last_name" : 1, "city" : 1})
 for customer in customers3:
     pprint.pp(customer)
+
+print("---------------Exercise 4-------------------")
+products4 = db.products.find({"details.color" : "white"}, {"name":1})
+for product in products4:
+    pprint.pp(product)
+
+print("---------------Exercise 5-------------------")
+products5 = db.products.find({"tags" : "sport"}, {"_id" : 0, "name" : 1, "tags" : 1})
+for product in products5:
+    pprint.pp(product)
+
+print("---------------Exercise 6-------------------")
+products6 = db.products.find({},{"_id" : 0, "name" : 1, "price" : 1}).sort("price", 1).limit(5)
+for product in products6:
+    pprint.pp(product)
+
+print("---------------Exercise 7-------------------")
+orders7 = db.orders.find({"items.product_id" : 2}, {"customer_id" : 1})
+for order in orders7:
+    pprint.pp(order)
+
+print("---------------Exercise 8-------------------")
+products8 = db.products.find({"category" : "Accessories"},{"_id" : 0, "name" : 1, "price" : 1})
+for product in products8:
+    pprint.pp(product)  
+print("Updated prices:")
+#Commented out to avoid raising prices more than once
+#db.products.update_many({"category" : "Accessories"}, {"$inc" : {"price" : 20}})
+products8 = db.products.find({"category" : "Accessories"},{"_id" : 0, "name" : 1, "price" : 1})
+for product in products8:
+    pprint.pp(product)  
+
+print("---------------Exercise 9-------------------")
+product9 = db.products.find_one({"name" : "Rain Jacket"})
+print(product9)
+#db.products.update_one({"name" : "Rain Jacket"},{"$push": {"tags": "new"}, "$set": {"restock_date" : datetime.now()}})
+product9 = db.products.find_one({"name" : "Rain Jacket"})
+print(product9)
+
+print("---------------Exercise 10-------------------")
+orders10 = db.orders.find({"status" : "new", "order_date" : {"$lte" : datetime(2026, 3, 20)}}, {"name" : 1, "order_date" : 1})
+for order in orders10:
+    pprint.pp(order)  
+db.orders.delete_many({"status" : "new", "order_date" : {"$lte" : datetime(2026, 3, 20)}})
+orders10 = db.orders.find({"status" : "new", "order_date" : {"$lte" : datetime(2026, 3, 20)}}, {"name" : 1, "order_date" : 1})
+for order in orders10:
+    pprint.pp(order)  
