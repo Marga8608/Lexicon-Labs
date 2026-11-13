@@ -1,0 +1,14 @@
+station_id,name,region,elevation_m
+S01,Abisko Fjäll,Norrland,388
+S02,Kiruna Torg,Norrland,530
+S03,Luleå Hamn,Norrland,12
+S04,Östersund Väst,Norrland,376
+S05,Falun Gruva,Svealand,120
+S06,Uppsala Slätt,Svealand,25
+S07,Örebro Syd,Svealand,55
+S08,Karlstad Strand,Svealand,48
+S09,Jönköping Höjd,Götaland,145
+S10,Kalmar Sund,Götaland,8
+S11,Lund Park,Götaland,60
+S12,Visby Kust,Götaland,14
+S06,Uppsala Slätt (new mast),Svealand,27
